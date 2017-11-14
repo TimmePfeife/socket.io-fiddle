@@ -5,7 +5,39 @@
     <title>Socket.IO Fiddle</title>
   </head>
   <body>
+    <button id="trigger_error">Trigger Error</button> 
+    <button id="trigger_working">Trigger Working</button>    
+    
+
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/main.js"></script>
+    <script>
+      let socket = io();
+
+      socket.on('connect', () => {
+        console.log('connect ' + socket.id);
+      });
+
+      // receive event, where emitter doesn't get answer
+      socket.on('answer_error', (data) => {
+        console.log(data);
+      })
+
+      // receive event, where emitter gets answer
+      socket.on('answer_working', (data) => {
+        console.log(data);
+      })
+
+      $('#trigger_error').click(() => {
+        console.log('triggered');
+        socket.emit('trigger_error', {msg: 'Error Test!'});
+      });
+
+      $('#trigger_working').click(() => {
+        console.log('triggered');
+        socket.emit('trigger_working', {msg: 'Working Test!'});
+      });
+
+    </script>
   </body>
 </html>
